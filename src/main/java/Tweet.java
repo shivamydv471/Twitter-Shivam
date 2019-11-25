@@ -9,13 +9,9 @@ public class Tweet {
 
 
     public String postTweet(String newTweet) throws TwitterException {
-        Twitter twitter = getTwitterinstance();
+        Twitter twitter = TwitterFactory.getSingleton();
         Status status = twitter.updateStatus(newTweet);
         return status.getText();
     }
-
-    public static Twitter getTwitterinstance() {
-        Twitter twitter = TwitterFactory.getSingleton();
-        return twitter;
-    }
+    
 }
