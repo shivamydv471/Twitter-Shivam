@@ -1,13 +1,12 @@
-import org.apache.commons.collections4.CollectionUtils;
-import twitter4j.TwitterException;
+import io.dropwizard.Application;
+import io.dropwizard.setup.Environment;
 
-import java.util.List;
-import java.util.Scanner;
+public class TwitterApplication extends Application<TwitterConfiguration>{
 
-public class Application {
+    public static void main(String[] args) throws Exception {
+        new TwitterApplication().run(args);
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        /* Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("type 1 to Post a tweet");
             System.out.println("type 2 to get the timeline");
@@ -44,6 +43,15 @@ public class Application {
 
 
             }
-        }
+        }*/
     }
+
+    @Override
+    public void run(TwitterConfiguration twitterConfiguration,
+                    Environment environment) throws Exception {
+        //Register resource
+        TwitterResource twitterResource = new TwitterResource();
+        environment.jersey().register(twitterResource);
+    }
+
 }
