@@ -19,7 +19,7 @@ public class TwitterResource {
     @POST
     @Path("/tweet")
     public Response postTweet(@QueryParam("message") String tweetMsg) throws TwitterException {
-        if (StringUtils.isNotEmpty(tweetMsg)) {
+        if (StringUtils.isNotEmpty(tweetMsg  )) {
             Tweet tweet = new Tweet();
             tweet.postTweet(tweetMsg);
             return Response.ok().build();
