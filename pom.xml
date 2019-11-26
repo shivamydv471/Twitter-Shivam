@@ -73,8 +73,19 @@
             <artifactId>dropwizard-core</artifactId>
             <version>2.0.0-rc13</version>
         </dependency>
-
-
+        <!-- https://mvnrepository.com/artifact/io.dropwizard/dropwizard-testing -->
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <version>0.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
