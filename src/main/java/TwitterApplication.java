@@ -50,7 +50,7 @@ public class TwitterApplication extends Application<TwitterConfiguration>{
     public void run(TwitterConfiguration twitterConfiguration,
                     Environment environment) throws Exception {
         //Register resource
-        TwitterResource twitterResource = new TwitterResource();
+        TwitterResource twitterResource = new TwitterResource(new Tweet(),new TimeLine());
         environment.jersey().register(twitterResource);
     }
 
