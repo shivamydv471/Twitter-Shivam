@@ -1,10 +1,15 @@
 import Config.TwitterConfiguration;
 import Resources.TwitterResource;
-import Service.TimeLine;
-import Service.Tweet;
+import Service.TimeLineService;
+import Service.TweetService;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import java.util.EnumSet;
 
 public class TwitterApplication extends Application<TwitterConfiguration> {
 
@@ -59,9 +64,19 @@ public class TwitterApplication extends Application<TwitterConfiguration> {
     public void run(TwitterConfiguration twitterConfiguration,
                     Environment environment) throws Exception {
         //Register resource
-        TwitterResource twitterResource = new TwitterResource(new Tweet(), new TimeLine());
+        TwitterResource twitterResource = new TwitterResource(new TweetService(), new TimeLineService());
 
-        //System.out.println(twitterConfiguration.getOauth().getAccessToken());
+        // Enable CORS headers
+        final FilterRegistration.Dynamic cors =
+                environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+        // Configure CORS parameters
+        cors.setInitParameter("allowedOrigins", "*");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+        cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+
+        // Add URL mapping
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
         environment.jersey().register(twitterResource);
     }
 
