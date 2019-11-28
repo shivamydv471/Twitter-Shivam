@@ -5,11 +5,11 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-public class Tweet {
+public class TweetService {
 
     Twitter twitter;
 
-    public Tweet() {
+    public TweetService() {
         this.twitter = TwitterFactory.getSingleton();
     }
 

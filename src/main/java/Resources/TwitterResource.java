@@ -1,7 +1,8 @@
 package Resources;
 
-import Service.TimeLine;
-import Service.Tweet;
+import Models.Tweet;
+import Service.TimeLineService;
+import Service.TweetService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +19,13 @@ public class TwitterResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TwitterResource.class);
 
-    private Tweet tweet;
+    private TweetService tweetService;
 
-    private TimeLine timeLine;
+    private TimeLineService timeLineService;
 
-    public TwitterResource(Tweet tweet, TimeLine timeLine) {
-        this.tweet = tweet;
-        this.timeLine = timeLine;
+    public TwitterResource(TweetService tweetService, TimeLineService timeLineService) {
+        this.tweetService = tweetService;
+        this.timeLineService = timeLineService;
     }
 
     @POST
@@ -32,7 +33,7 @@ public class TwitterResource {
     public Response postTweet(@QueryParam("message") String tweetMsg) throws TwitterException {
         LOGGER.debug("postTweet method started",tweetMsg);
         if (StringUtils.isNotEmpty(tweetMsg)) {
-            String s = tweet.postTweet(tweetMsg);
+            String s = tweetService.postTweet(tweetMsg);
             if(StringUtils.isNotEmpty(s)){
                 return Response.ok().build();
             }
@@ -47,10 +48,22 @@ public class TwitterResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTimeline() throws TwitterException {
         LOGGER.debug("getTimeline method started");
-        List<String> tweets = timeLine.getTimeLine();
-        GenericEntity<List<String>> list = new GenericEntity<List<String>>(tweets) {
+        List<Tweet> tweets = timeLineService.getTimeLine();
+        GenericEntity<List<Tweet>> list = new GenericEntity<List<Tweet>>(tweets) {
         };
         LOGGER.debug("getTimeline method ends");
+        return Response.ok(list).build();
+
+    }
+    @GET
+    @Path("/timeline/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTimelineFilter(@QueryParam("filter") String tweetFilter) throws TwitterException {
+        LOGGER.debug("getTimelineFilter method started");
+        List<Tweet> tweets = timeLineService.getTimeLineByFilter(tweetFilter);
+        GenericEntity<List<Tweet>> list = new GenericEntity<List<Tweet>>(tweets) {
+        };
+        LOGGER.debug("getTimelineFilter method ends");
         return Response.ok(list).build();
 
     }
