@@ -1,3 +1,5 @@
+package Service;
+
 import org.apache.commons.collections4.CollectionUtils;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

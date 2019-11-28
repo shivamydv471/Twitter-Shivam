@@ -1,6 +1,14 @@
 # Twitter-Shivam
 A POC to use twitter API's
 
-There are two Programs that we can run.
-1) We can run Tweet Program to post tweet through command line.
-2) We can run Timeline Program to get the timeline of the twitter account in console.
+It is a dropwizard application. It contains two API's
+1) **Post Service.Tweet:** 
+
+    URL: http://localhost:8080/api/1.0/twitter/tweet?message={your tweet}
+    
+2) **Retrieve Timeline:**
+
+    URL: http://localhost:8080/api/1.0/twitter/timeline
+    
+**Running The Application:**
+    Run it like a normal dropwizard application giving program arguments as 'server 'confifuration_file.yml''

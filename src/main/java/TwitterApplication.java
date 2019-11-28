@@ -1,7 +1,12 @@
+import Config.TwitterConfiguration;
+import Resources.TwitterResource;
+import Service.TimeLine;
+import Service.Tweet;
 import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class TwitterApplication extends Application<TwitterConfiguration>{
+public class TwitterApplication extends Application<TwitterConfiguration> {
 
     public static void main(String[] args) throws Exception {
         new TwitterApplication().run(args);
@@ -18,7 +23,7 @@ public class TwitterApplication extends Application<TwitterConfiguration>{
                     try {
                         System.out.println("What's happening?");
                         String newTweet = sc.nextLine();
-                        Tweet ct = new Tweet();
+                        Service.Tweet ct = new Service.Tweet();
                         ct.postTweet(newTweet);
                     } catch (TwitterException e) {
                         System.out.println("Something weird happened. Sorry for the inconvenience");
@@ -26,7 +31,7 @@ public class TwitterApplication extends Application<TwitterConfiguration>{
                     break;
                 case 2:
                     try {
-                        TimeLine timeLine = new TimeLine();
+                        Service.TimeLine timeLine = new Service.TimeLine();
                         List<String> tweets = timeLine.getTimeLine();
                         if (CollectionUtils.isNotEmpty(tweets)) {
                             for (String tweet : tweets) {
@@ -47,11 +52,18 @@ public class TwitterApplication extends Application<TwitterConfiguration>{
     }
 
     @Override
+    public void initialize(Bootstrap<TwitterConfiguration> bootstrap) {
+    }
+
+    @Override
     public void run(TwitterConfiguration twitterConfiguration,
                     Environment environment) throws Exception {
         //Register resource
-        TwitterResource twitterResource = new TwitterResource(new Tweet(),new TimeLine());
+        TwitterResource twitterResource = new TwitterResource(new Tweet(), new TimeLine());
+
+        //System.out.println(twitterConfiguration.getOauth().getAccessToken());
         environment.jersey().register(twitterResource);
     }
+
 
 }

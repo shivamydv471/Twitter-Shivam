@@ -1,9 +1,11 @@
+import Resources.TwitterResource;
+import Service.TimeLine;
+import Service.Tweet;
 import org.junit.Assert;
 import org.junit.Test;
 import twitter4j.TwitterException;
 
 import javax.ws.rs.core.Response;
-
 import java.util.ArrayList;
 import java.util.List;
 

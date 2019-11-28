@@ -1,3 +1,7 @@
+package Resources;
+
+import Service.TimeLine;
+import Service.Tweet;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +30,7 @@ public class TwitterResource {
     @POST
     @Path("/tweet")
     public Response postTweet(@QueryParam("message") String tweetMsg) throws TwitterException {
+        LOGGER.debug("postTweet method started",tweetMsg);
         if (StringUtils.isNotEmpty(tweetMsg)) {
             String s = tweet.postTweet(tweetMsg);
             if(StringUtils.isNotEmpty(s)){
@@ -33,6 +38,7 @@ public class TwitterResource {
             }
             return Response.serverError().build();
         }
+        LOGGER.debug("postTweet method ends");
         return Response.noContent().build();
     }
 
@@ -40,10 +46,11 @@ public class TwitterResource {
     @Path("/timeline")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTimeline() throws TwitterException {
-
+        LOGGER.debug("getTimeline method started");
         List<String> tweets = timeLine.getTimeLine();
         GenericEntity<List<String>> list = new GenericEntity<List<String>>(tweets) {
         };
+        LOGGER.debug("getTimeline method ends");
         return Response.ok(list).build();
 
     }
