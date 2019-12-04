@@ -3,9 +3,18 @@ package Models;
 import java.util.Date;
 
 public class Tweet {
+    Long id;
     String message;
     User user;
     Date createdAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getMessage() {
         return message;

@@ -3,6 +3,7 @@ package Resources;
 import Models.Tweet;
 import Service.TimeLineService;
 import Service.TweetService;
+import io.dropwizard.jersey.caching.CacheControl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Path("/api/1.0/twitter")
 public class TwitterResource {
@@ -23,6 +25,7 @@ public class TwitterResource {
 
     private TimeLineService timeLineService;
 
+
     public TwitterResource(TweetService tweetService, TimeLineService timeLineService) {
         this.tweetService = tweetService;
         this.timeLineService = timeLineService;
@@ -30,6 +33,7 @@ public class TwitterResource {
 
     @POST
     @Path("/tweet")
+    @CacheControl(maxAge = 2, maxAgeUnit = TimeUnit.HOURS)
     public Response postTweet(@QueryParam("message") String tweetMsg) throws TwitterException {
         LOGGER.debug("postTweet method started",tweetMsg);
         if (StringUtils.isNotEmpty(tweetMsg)) {
@@ -46,6 +50,7 @@ public class TwitterResource {
     @GET
     @Path("/timeline")
     @Produces(MediaType.APPLICATION_JSON)
+    //@CacheControl(maxAge = 2, maxAgeUnit = TimeUnit.HOURS)
     public Response getTimeline() throws TwitterException {
         LOGGER.debug("getTimeline method started");
         List<Tweet> tweets = timeLineService.getTimeLine();

@@ -25,6 +25,7 @@ public class TimeLineService {
             Tweet tweet = new Tweet();
             tweet.setCreatedAt(status.getCreatedAt());
             tweet.setMessage(status.getText());
+            tweet.setId(status.getId());
             if(Objects.nonNull(status.getUser())){
                 tweet.setUser(new User(status.getUser().getScreenName(),status.getUser().getName(),status.getUser().getProfileImageURL()));
             }
