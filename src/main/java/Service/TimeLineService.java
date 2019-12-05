@@ -38,16 +38,17 @@ public class TimeLineService {
         Twitter twitter = TwitterFactory.getSingleton();
 
         List<Status> statuses = twitter.getHomeTimeline();
-        List<Tweet> tweets = new ArrayList<>();
-        for(Status status:statuses){
-            Tweet tweet = new Tweet();
-            tweet.setCreatedAt(status.getCreatedAt());
-            tweet.setMessage(status.getText());
-            if(Objects.nonNull(status.getUser())){
-                tweet.setUser(new User(status.getUser().getScreenName(),status.getUser().getName(),status.getUser().getProfileImageURL()));
-            }
-            tweets.add(tweet);
-        }
+        List<Tweet> tweets = statuses.stream().map(
+                status -> {
+                    Tweet tweet = new Tweet();
+                    tweet.setCreatedAt(status.getCreatedAt());
+                    tweet.setMessage(status.getText());
+                    if(Objects.nonNull(status.getUser())){
+                        tweet.setUser(new User(status.getUser().getScreenName(),status.getUser().getName(),status.getUser().getProfileImageURL()));
+                    }
+                    return tweet;
+                }
+        ).filter(tweet -> tweet.getMessage().contains(tweetFilter)).collect(Collectors.toList());
         return tweets;
     }
 }
